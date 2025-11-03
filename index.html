@@ -1,0 +1,94 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тёмная Ферма</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="app-wrapper">
+        <div class="container">
+            <div class="header">
+                <h1>🌱 Тёмная Ферма</h1>
+                <div class="resources">
+                    <span id="souls">Души: 0</span>
+                    <span id="darkEssence">Тёмная эссенция: 100</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="shopToggle" class="toggle-btn">🏪 Магазин Семян</button>
+                <button id="inventoryToggle" class="toggle-btn">🎒 Инвентарь</button>
+                <button id="authButton" class="toggle-btn auth-btn">👤 Аккаунт</button>
+            </div>
+
+            <!-- Магазин -->
+            <div id="shop" class="shop hidden">
+                <h3>🏪 Тёмный рынок семян</h3>
+                <div class="shop-scroll-container">
+                    <div class="shop-items" id="shopItems"></div>
+                </div>
+            </div>
+
+            <!-- Инвентарь -->
+            <div id="inventory" class="inventory hidden">
+                <h3>🎒 Инвентарь</h3>
+                <div class="inventory-scroll-container">
+                    <div class="inventory-items" id="inventoryItems"></div>
+                </div>
+            </div>
+
+            <!-- Ферма -->
+            <div class="farm-container">
+                <div class="farm-area" id="farmArea"></div>
+            </div>
+
+            <!-- Постройки -->
+            <div class="buildings-area">
+                <h3>🏭 Алхимическая лаборатория</h3>
+                <div class="buildings-container" id="buildingsContainer"></div>
+            </div>
+
+            <div class="instructions">
+                <h3>⚡ Механика игры:</h3>
+                <p>• Купи семена в магазине → посади на участке</p>
+                <p>• Кликай на растения или жди пока вырастут</p>
+                <p>• Собери урожай → продай в инвентаре за души</p>
+                <p>• Используй алхимический котёл для создания эликсиров</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно авторизации -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>🔐 Аккаунт Тёмной Фермы</h3>
+            
+            <div id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Эл. почта" class="auth-input">
+                <input type="password" id="loginPassword" placeholder="Пароль" class="auth-input">
+                <button id="loginSubmit" class="auth-submit">Войти</button>
+                <button id="showRegister" class="auth-switch">Нет аккаунта? Зарегистрироваться 👇👇👇</button>
+            </div>
+            
+            <div id="registerForm" class="hidden">
+                <input type="text" id="registerUsername" placeholder="Эл. почта" class="auth-input">
+                <input type="password" id="registerPassword" placeholder="Пароль" class="auth-input">
+                <input type="password" id="registerConfirm" placeholder="Подтвердите пароль" class="auth-input">
+                <button id="registerSubmit" class="auth-submit">Зарегистрироваться</button>
+                <button id="showLogin" class="auth-switch">Уже есть аккаунт? Войти 👆👆👆</button>
+            </div>
+            
+            <div id="authStatus" class="auth-status"></div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
