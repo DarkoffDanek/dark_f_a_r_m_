@@ -3,33 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кликер-Ферма</title>
+    <title>Темная Ферма Бездны</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>✨ Магическая Ферма ✨</h1>
+            <h1>🌑 Ферма Бездны 🌑</h1>
             <div class="stats">
-                <div class="money">💰 Золото: <span id="gold">100</span></div>
-                <div class="energy">⚡ Энергия: <span id="energy">50</span>/100</div>
+                <div class="souls">👁️ Души: <span id="souls">100</span></div>
+                <div class="dark-energy">⚡ Тёмная энергия: <span id="darkEnergy">50</span>/100</div>
+                <div class="shovel-level">🔮 Сила заклинания: <span id="shovelLevel">1</span></div>
             </div>
         </header>
 
-        <div class="shop">
-            <h2>Магазин</h2>
-            <button onclick="buySeed('carrot')">Морковь (10 золота)</button>
-            <button onclick="buySeed('tomato')">Помидор (20 золота)</button>
-            <button onclick="buyUpgrade()">Улучшение лопаты (100 золота)</button>
+        <div class="altar">
+            <h2>🕯️ Алтарь Тёмных Искусств</h2>
+            <button onclick="buySeed('shadow-root')">Корень Тени (10 душ)</button>
+            <button onclick="buySeed('blood-fruit')">Плод Крови (20 душ)</button>
+            <button onclick="buySeed('void-blossom')">Цветок Бездны (50 душ)</button>
+            <button onclick="buyUpgrade()">Тёмное заклинание (100 душ)</button>
+            <button onclick="sacrificeSouls()">⚡ Жертва душ (10 душ = 25 энергии)</button>
         </div>
 
-        <div id="farm" class="farm"></div>
-
-        <div class="tutorial">
-            <p>💡 <strong>Как играть:</strong> Сажай растения, кликай на них для ускорения роста, собирай урожай!</p>
-            <p>⚡ <strong>Секрет:</strong> Каждый клик тратит 1 энергию, но ускоряет рост на 5 секунд!</p>
+        <div class="farm-grid">
+            <h3>🌀 Ритуальные Круги</h3>
+            <div id="farm" class="farm"></div>
         </div>
+
+        <div class="dark-tutorial">
+            <p>🔮 <strong>Тёмные знания:</strong> Сажай запретные растения, питай их своей энергией для ускорения роста!</p>
+            <p>💀 <strong>Тайна Бездны:</strong> Каждый клик тратит 1 тёмную энергию, но ускоряет рост на 5 секунд!</p>
+            <p>🌑 <strong>Предупреждение:</strong> Слишком частое использование магии может привлечь... внимание.</p>
+        </div>
+
+        <div id="messages" class="messages"></div>
     </div>
-    <script src="game.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
