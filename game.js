@@ -6,7 +6,7 @@ let scale = 1;
 let offsetX = 0;
 let offsetY = 40;
 
-const MAX_ROWS = 10000;
+const MAX_ROWS = 1000;
 const CELL_SIZE = 28;
 const FONT_SIZE = 12;
 
