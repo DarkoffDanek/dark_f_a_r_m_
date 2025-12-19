@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div id="ui">
+    <label>
+        Режим:
+        <select id="mode">
+            <option value="normal">Обычный</option>
+            <option value="mod">mod N</option>
+        </select>
+    </label>
+
+    <label>
+        mod:
+        <input id="modValue" type="number" value="2" min="2" max="20">
+    </label>
+</div>
+
 <div id="viewport">
     <div id="triangle"></div>
 </div>
