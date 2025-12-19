@@ -1,11 +1,44 @@
-html, body {
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    box-sizing: border-box;
+}
+
+body {
     background: #000;
+    overflow: hidden;
+    font-family: monospace;
+}
+
+#viewport {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     touch-action: none;
 }
 
-canvas {
-    display: block;
+#triangle {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform-origin: top center;
+    transform: translateX(-50%) scale(1);
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.cell {
+    min-width: 32px;
+    padding: 6px;
+    margin: 2px;
+    text-align: center;
+    border-radius: 6px;
+    background: rgba(200, 200, 220, 0.15);
+    color: #eaeaff;
+    font-size: 14px;
+    user-select: none;
+    white-space: nowrap;
 }
