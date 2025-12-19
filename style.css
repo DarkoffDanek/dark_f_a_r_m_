@@ -8,44 +8,45 @@ body {
     background: #000;
     overflow: hidden;
     font-family: monospace;
-    color: #fff;
 }
 
-/* UI */
+/* ---------- UI ---------- */
 #ui {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 10;
-    background: rgba(30, 30, 40, 0.85);
-    padding: 8px 12px;
-    border-radius: 8px;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    background: rgba(30, 30, 40, 0.9);
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #fff;
     display: flex;
     gap: 12px;
 }
 
-#ui input, #ui select {
+#ui select,
+#ui input {
     background: #111;
     color: #fff;
     border: 1px solid #555;
-    border-radius: 4px;
-    padding: 2px 6px;
+    border-radius: 5px;
+    padding: 3px 6px;
 }
 
-/* Viewport */
+/* ---------- VIEWPORT ---------- */
 #viewport {
     width: 100vw;
     height: 100vh;
-    touch-action: none;
     overflow: hidden;
+    touch-action: none;
 }
 
-/* Triangle */
+/* ---------- TRIANGLE ---------- */
 #triangle {
     position: absolute;
     top: 80px;
-    left: 50%;
-    transform-origin: top center;
+    left: 0;
+    transform-origin: 0 0;
 }
 
 .row {
@@ -61,25 +62,21 @@ body {
     font-size: 13px;
     text-align: center;
     user-select: none;
-    transition: background 0.2s;
 }
 
-/* Normal mode colors */
+/* Normal */
 .cell.normal {
     background: rgba(200, 200, 230, 0.15);
     color: #eaeaff;
 }
 
-/* Highlight primes / powers */
 .cell.highlight {
     background: rgba(255, 200, 120, 0.35);
-    color: #fff6d8;
 }
 
 /* mod N */
 .cell.mod0 {
-    background: rgba(240, 240, 255, 0.85);
-    color: #000;
+    background: rgba(240, 240, 255, 0.9);
 }
 
 .cell.modn {
