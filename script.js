@@ -1,16 +1,17 @@
 const triangle = document.getElementById("triangle");
+const viewport = document.getElementById("viewport");
 const modeSelect = document.getElementById("mode");
 const modInput = document.getElementById("modValue");
 
 let scale = 1;
-let offsetX = 0;
-let offsetY = 0;
+let offsetX = window.innerWidth / 2;
+let offsetY = 80;
 
 let rowsRendered = 0;
 const MAX_ROWS = 10000;
 const ROWS_PER_BATCH = 25;
 
-// ---------- МАТЕМАТИКА ----------
+// ---------- MATH ----------
 function nextRow(prev) {
     const row = [1n];
     for (let i = 1; i < prev.length; i++) {
@@ -20,37 +21,28 @@ function nextRow(prev) {
     return row;
 }
 
-// ---------- ЦВЕТА ----------
 function isPowerOfTwo(n) {
     return n > 0n && (n & (n - 1n)) === 0n;
 }
 
-function createCell(value) {
+// ---------- CELL ----------
+function createCell(v) {
     const cell = document.createElement("div");
-    cell.classList.add("cell");
+    cell.className = "cell";
 
-    const mode = modeSelect.value;
-
-    if (mode === "normal") {
+    if (modeSelect.value === "normal") {
         cell.classList.add("normal");
-        cell.textContent = value.toString();
-
-        if (isPowerOfTwo(value)) {
-            cell.classList.add("highlight");
-        }
+        cell.textContent = v.toString();
+        if (isPowerOfTwo(v)) cell.classList.add("highlight");
     } else {
         const mod = BigInt(modInput.value);
-        if (value % mod === 0n) {
-            cell.classList.add("mod0");
-        } else {
-            cell.classList.add("modn");
-        }
+        if (v % mod === 0n) cell.classList.add("mod0");
+        else cell.classList.add("modn");
     }
-
     return cell;
 }
 
-// ---------- РЕНДЕР ----------
+// ---------- RENDER ----------
 let currentRow = [1n];
 
 function renderBatch() {
@@ -59,7 +51,6 @@ function renderBatch() {
 
         const rowDiv = document.createElement("div");
         rowDiv.className = "row";
-
         currentRow.forEach(v => rowDiv.appendChild(createCell(v)));
         triangle.appendChild(rowDiv);
 
@@ -76,27 +67,37 @@ function resetTriangle() {
     renderBatch();
 }
 
-// ---------- ТРАНСФОРМ ----------
-function updateTransform() {
+// ---------- TRANSFORM ----------
+function applyTransform() {
     triangle.style.transform =
-        `translate(${offsetX}px, ${offsetY}px) scale(${scale}) translateX(-50%)`;
+        `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
 }
 
-// ---------- ЗУМ ----------
-window.addEventListener("wheel", e => {
-    e.preventDefault();
-    scale += e.deltaY * -0.001;
+// ---------- ZOOM CORE ----------
+function zoomAt(focusX, focusY, zoomFactor) {
+    const oldScale = scale;
+    scale *= zoomFactor;
     scale = Math.min(Math.max(0.1, scale), 5);
-    updateTransform();
+
+    offsetX = focusX - (focusX - offsetX) * (scale / oldScale);
+    offsetY = focusY - (focusY - offsetY) * (scale / oldScale);
+
+    applyTransform();
     if (scale > 1.3) renderBatch();
+}
+
+// ---------- MOUSE ----------
+viewport.addEventListener("wheel", e => {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.1 : 0.9;
+    zoomAt(e.clientX, e.clientY, factor);
 }, { passive: false });
 
 // ---------- DRAG ----------
 let dragging = false;
-let lastX = 0;
-let lastY = 0;
+let lastX, lastY;
 
-window.addEventListener("mousedown", e => {
+viewport.addEventListener("mousedown", e => {
     dragging = true;
     lastX = e.clientX;
     lastY = e.clientY;
@@ -108,7 +109,7 @@ window.addEventListener("mousemove", e => {
     offsetY += e.clientY - lastY;
     lastX = e.clientX;
     lastY = e.clientY;
-    updateTransform();
+    applyTransform();
 });
 
 window.addEventListener("mouseup", () => dragging = false);
@@ -116,14 +117,14 @@ window.addEventListener("mouseup", () => dragging = false);
 // ---------- TOUCH ----------
 let lastDist = null;
 
-window.addEventListener("touchstart", e => {
+viewport.addEventListener("touchstart", e => {
     if (e.touches.length === 1) {
         lastX = e.touches[0].clientX;
         lastY = e.touches[0].clientY;
     }
 });
 
-window.addEventListener("touchmove", e => {
+viewport.addEventListener("touchmove", e => {
     e.preventDefault();
 
     if (e.touches.length === 1) {
@@ -131,31 +132,31 @@ window.addEventListener("touchmove", e => {
         offsetY += e.touches[0].clientY - lastY;
         lastX = e.touches[0].clientX;
         lastY = e.touches[0].clientY;
-        updateTransform();
+        applyTransform();
     }
 
     if (e.touches.length === 2) {
+        const x = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const y = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const dist = Math.hypot(dx, dy);
 
         if (lastDist) {
-            scale *= dist / lastDist;
-            scale = Math.min(Math.max(0.1, scale), 5);
-            updateTransform();
-            if (scale > 1.3) renderBatch();
+            zoomAt(x, y, dist / lastDist);
         }
         lastDist = dist;
     }
 }, { passive: false });
 
-window.addEventListener("touchend", () => lastDist = null);
+viewport.addEventListener("touchend", () => lastDist = null);
 
 // ---------- UI ----------
 modeSelect.addEventListener("change", resetTriangle);
 modInput.addEventListener("change", resetTriangle);
 
 // ---------- START ----------
-updateTransform();
+applyTransform();
 renderBatch();
 renderBatch();
