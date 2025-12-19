@@ -2,7 +2,7 @@ const triangle = document.getElementById("triangle");
 
 let scale = 1;
 let rowsRendered = 0;
-const MAX_ROWS = 100;
+const MAX_ROWS = 50;
 const ROWS_PER_BATCH = 20;
 
 // ---------- МАТЕМАТИКА ----------
